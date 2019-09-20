@@ -1,6 +1,16 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import CharacterCard from './CharacterCard';
+import styled from 'styled-components';
+
+// STYLES
+const CardContainer = styled.div`
+    display: flex;
+    flex-wrap: wrap;
+ `;
+
+
+ //FUNCTIONS
 
 function CharacterList() {
   const[characters, setCharacters] = useState([])
@@ -23,8 +33,7 @@ function CharacterList() {
   return (
     <>
       <h2>Who the Hell are These People?</h2>
-    
-      <section className="character-list">
+      <CardContainer>
         {characters.map(item=>{
           return <CharacterCard
           key={item.id}
@@ -36,7 +45,7 @@ function CharacterList() {
           species={item.species}
           />
         })}
-      </section>
+      </CardContainer>
     </>
   );
 }
