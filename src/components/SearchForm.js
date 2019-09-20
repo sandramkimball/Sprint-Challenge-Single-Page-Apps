@@ -44,13 +44,6 @@ const SearchForm = ({errors, touched, values, status}) => {
         </SearchBar>
       </Form>
 
-      {profiles.map(profile=> (
-        CharacterList.filter(nameSearch=>{
-          if(nameSearch == profile.name){
-              return profile;
-            }
-        })
-      ))}
 
     </section>
   );
@@ -69,14 +62,15 @@ const FormikSearchForm = withFormik({
     nameSearch: Yup.string().required,
   }),
 
-  handleSearch(values, {setstatus}){
-    axios.post('https://reqres.in/api/users', values).then(res=>{
-        console.log(res.data)
-    }).catch(err=>{
-        console.log(err.res);
-    })
-  }
-})(SearchForm);
+  handleSubmit(nameSearch) {
+    if(nameSearch == CharacterList.name){
+      return `I found ${nameSearch}.`
+    } else {
+      return `They were eaten in this dimension.`
+    }
+
+}}) (SearchForm);
+
 
 
 export default FormikSearchForm;
