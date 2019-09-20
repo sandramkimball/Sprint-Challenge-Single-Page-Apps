@@ -11,6 +11,7 @@ padding: 5px;
 margin: 5px;
 width: 40%;
 height: 45%;
+font-weight: 700;
 `;
 
 const SearchButton = styled.button`
@@ -37,22 +38,25 @@ const SearchForm = ({errors, touched, values, status}) => {
     <section className="search-form">
       <Form>
         <SearchBar>
-          Who Ya Lookin' For, Kid? <Field type='text' name='nameSearch'/>
+          Who Ya Lookin' For, Kid? <Field type='text' name='nameSearch' placeholder=' Name Only'/>
           {touched.nameSearch && errors.nameSearch && (<p className='error'>{errors.nameSearch}</p>)}
+          <SearchButton>Search</SearchButton>
         </SearchBar>
-        <SearchButton>Search</SearchButton>
       </Form>
 
       {profiles.map(profile=> (
-        <div>
-          <p>Looky Here:</p>
-          <CharacterList profile={profile.id}/>
-        </div>
+        CharacterList.filter(nameSearch=>{
+          if(nameSearch == profile.name){
+              return profile;
+            }
+        })
       ))}
 
     </section>
   );
 };
+
+
 
 const FormikSearchForm = withFormik({
   mapPropsToValues({nameSearch}){
@@ -65,7 +69,7 @@ const FormikSearchForm = withFormik({
     nameSearch: Yup.string().required,
   }),
 
-  handleSubmit(values, {setstatus}){
+  handleSearch(values, {setstatus}){
     axios.post('https://reqres.in/api/users', values).then(res=>{
         console.log(res.data)
     }).catch(err=>{
@@ -76,3 +80,16 @@ const FormikSearchForm = withFormik({
 
 
 export default FormikSearchForm;
+
+// CharacterList.filter(nameSearch=>{
+//   if(nameSearch == item.name){
+//       return item
+//     }
+// })
+
+// {profiles.map(profile=> (
+//   <div>
+//     <p>Looky Here:</p>
+//     <CharacterList profile={profile.id}/>
+//   </div>
+// ))}
